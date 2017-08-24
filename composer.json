@@ -1,5 +1,5 @@
 {
-    "name": "mageguide/skroutz",
+    "name": "mageguide/skroutz-clean",
     "description": "Adds Skroutz Tracking Code to your Magento 2 E-shop",
     "require": {
         "php": "~7.0.0",
