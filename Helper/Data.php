@@ -5,7 +5,7 @@ namespace MageGuide\Skroutz\Helper;
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
-	/**
+    /**
      * @var array
      */
     protected $_skroutzOptions;
@@ -38,5 +38,3 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
 }
-
-?>

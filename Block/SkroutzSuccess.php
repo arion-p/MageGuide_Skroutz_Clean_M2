@@ -54,8 +54,8 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         \Magento\Sales\Model\OrderFactory $orderFactory,
         \Magento\Catalog\Model\Product $product,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
-        \Magento\Framework\View\Element\Template\Context $context)
-    {
+        \Magento\Framework\View\Element\Template\Context $context
+		) {
         $this->_checkoutSession = $checkoutSession;
         $this->_orderFactory = $orderFactory;
         $this->_product = $product;
@@ -65,6 +65,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         if ($this->_checkoutSession->getLastRealOrderId()) {
             $this->_order = $this->_orderFactory->create()->loadByIncrementId($this->_checkoutSession->getLastRealOrderId());
         }
+
         parent::__construct($context);
     }
 
@@ -79,6 +80,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         if ($order) {
             $lastorderId = $order->getId();
             return $lastorderId;
+
         }
         return false;
     }
@@ -93,6 +95,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         $order = $this->_order;
         if ($order) {
             $price = number_format($order->getSubtotalInclTax() + $order->getShippingInclTax(), 2);
+			
             return $price;
         }
         return false;
@@ -108,6 +111,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         $order = $this->_order;
         if ($order) {
             $shippingCost = number_format($order->getShippingInclTax(), 2);
+			
             return $shippingCost;
         }
         return false;
@@ -126,8 +130,10 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
             $taxtotal = $revenuefortax / 1.24;
             $taxAmountAlmost = $revenuefortax - $taxtotal;
             $taxAmount = number_format($taxAmountAlmost, 2);
+			
             return $taxAmount;
         }
+		
         return false;
     }
 
@@ -141,6 +147,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         $order = $this->_order;
         if ($order) {
             $items = $order->getAllVisibleItems();
+			
             return $items;
         }
         return false;
@@ -161,11 +168,13 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
      *
      * @return integer|boolean
      */
+
     public function getParentId($childId)
     {
         $parentByChild = $this->_catalogProductTypeConfigurable->getParentIdsByChild($childId);
-        if(isset($parentByChild[0])){
+        if (isset($parentByChild[0])) {
             $parentId = $parentByChild[0];
+			
             return $parentId;      
         }
         return false;
