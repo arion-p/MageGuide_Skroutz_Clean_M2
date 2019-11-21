@@ -126,11 +126,15 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     {
         $order = $this->_order;
         if ($order) {
-            $revenuefortax = $order->getSubtotalInclTax() + $order->getShippingInclTax();
-            $taxtotal = $revenuefortax / 1.24;
-            $taxAmountAlmost = $revenuefortax - $taxtotal;
-            $taxAmount = number_format($taxAmountAlmost, 2);
+            // $revenuefortax = $order->getSubtotalInclTax() + $order->getShippingInclTax();
+            // $taxtotal = $revenuefortax / 1.24;
+            // $taxAmountAlmost = $revenuefortax - $taxtotal;
+            // $taxAmount = number_format($taxAmountAlmost, 2);
 			
+            $revenueInclTax = $order->getSubtotalInclTax() + $order->getShippingInclTax();
+            $revenue = $order->getSubtotal() + $order->getShipping();
+            $taxAmount = $revenueInclTax - $revenue;
+            $taxAmount = number_format($taxAmount, 2);
             return $taxAmount;
         }
 		
