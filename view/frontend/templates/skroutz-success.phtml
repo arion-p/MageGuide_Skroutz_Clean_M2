@@ -33,7 +33,7 @@ skroutz_analytics('ecommerce', 'addItem', JSON.stringify({
 		order_id:   '<?php echo $block->getRealOrderId(); ?>',	// Order ID. Required.
 		product_id: '<?php echo $item_sku; ?>',					// Product ID. Required.
 		name:       '<?php echo $item->getName(); ?>',			// Product Name. Required.
-		price:      '<?php echo $item->getPrice(); ?>',			// Price per Unit. Required.
+		price:      '<?php echo $item->getPriceInclTax(); ?>',	// Price per Unit. Required.
 		quantity:   '<?php echo $item->getQtyOrdered(); ?>'		// Quantity of Items. Required.
   	}));
 
