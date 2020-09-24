@@ -132,7 +132,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
             // $taxAmount = number_format($taxAmountAlmost, 2);
 			
             $revenueInclTax = $order->getSubtotalInclTax() + $order->getShippingInclTax();
-            $revenue = $order->getSubtotal() + $order->getShipping();
+            $revenue = $order->getSubtotal() + $order->getShippingAmount();
             $taxAmount = $revenueInclTax - $revenue;
             $taxAmount = number_format($taxAmount, 2);
             return $taxAmount;
