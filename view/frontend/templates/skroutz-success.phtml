@@ -1,44 +1,44 @@
 <?php
-	$_helper = $this->helper('MageGuide\Skroutz\Helper\Data');
-    $isActive = $_helper->getIsActive();
-    $programID = $_helper->getProgramID();
-	
-	if ($isActive && $programID != ""):
+$_helper = $this->helper('MageGuide\Skroutz\Helper\Data');
+$isActive = $_helper->getIsActive();
+$programID = $_helper->getProgramID();
+
+if ($isActive && $programID != "") :
 ?>
 
-<!-- SKROUTZ ANALYTICS CODE start -->
-<script>
-  skroutz_analytics('ecommerce', 'addOrder', JSON.stringify({
-    order_id: '<?php echo $block->getRealOrderId(); ?>',	// Order ID. Required.
-    revenue:  '<?php echo $block->getPrice(); ?>', 			// Grand Total. Includes Tax and Shipping. Does not include payment costs.
-    shipping: '<?php echo $block->getShippingCost(); ?>',	// Total Shipping Cost. Does not include payment costs.
-    tax:      '<?php echo $block->getTaxAmount(); ?>'		// Total Tax.
-  }));
-</script>
+    <!-- SKROUTZ ANALYTICS CODE start -->
+    <script>
+        skroutz_analytics('ecommerce', 'addOrder', JSON.stringify({
+            order_id: '<?= $block->getRealOrderId() ?>', // Order ID. Required.
+            revenue: '<?= $block->getPrice() ?>', // Grand Total. Includes Tax and Shipping. Does not include payment costs.
+            shipping: '<?= $block->getShippingCost() ?>', // Total Shipping Cost. Does not include payment costs.
+            tax: '<?= $block->getTaxAmount() ?>' // Total Tax.
+        }));
+    </script>
 
-<?php $items = $block->getAllOrderVisibleItems() ?>
+    <?php $items = $block->getAllOrderVisibleItems() ?>
 
-<script>
-	<?php foreach ($items as $item) {
-			$child_id = $block->getChildId($item->getSku());
-			$parent_id = $block->getParentId($child_id);
-			if ($parent_id) {
-				$item_sku = $block->getSkuFromId($parent_id);
-			} else {
-				$item_sku = $block->getSkuFromId($child_id);
-			}
-	?>
+    <script>
+        <?php foreach ($items as $item) {
+            $child_id = $block->getChildId($item->getSku());
+            $parent_id = $block->getParentId($child_id);
+            if ($parent_id) {
+                $item_sku = $block->getSkuFromId($parent_id);
+            } else {
+                $item_sku = $block->getSkuFromId($child_id);
+            }
+        ?>
 
-skroutz_analytics('ecommerce', 'addItem', JSON.stringify({
-		order_id:   '<?php echo $block->getRealOrderId(); ?>',	// Order ID. Required.
-		product_id: '<?php echo $item_sku; ?>',					// Product ID. Required.
-		name:       '<?php echo $item->getName(); ?>',			// Product Name. Required.
-		price:      '<?php echo $item->getPriceInclTax(); ?>',	// Price per Unit. Required.
-		quantity:   '<?php echo $item->getQtyOrdered(); ?>'		// Quantity of Items. Required.
-  	}));
+            skroutz_analytics('ecommerce', 'addItem', JSON.stringify({
+                order_id: '<?= $block->getRealOrderId() ?>', // Order ID. Required.
+                product_id: '<?= $block->escapeJs($item_sku) ?>', // Product ID. Required.
+                name: '<?= $block->escapeJs($item->getName()) ?>', // Product Name. Required.
+                price: '<?= $item->getPriceInclTax() ?>', // Price per Unit. Required.
+                quantity: '<?= $item->getQtyOrdered() ?>' // Quantity of Items. Required.
+            }));
 
-	<?php } ?>
-</script>
-<!-- SKROUTZ ANALYTICS CODE end -->
+        <?php } ?>
+    </script>
+    <!-- SKROUTZ ANALYTICS CODE end -->
 
 <?php endif; ?>
