@@ -88,13 +88,13 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     /**
      * Returns the order subtotal with added tax and shipping fee
      *
-     * @return string|boolean
+     * @return float|boolean
      */
     public function getPrice()
     {
         $order = $this->_order;
         if ($order) {
-            $price = number_format($order->getSubtotalInclTax() + $order->getShippingInclTax(), 2);
+            $price = $order->getSubtotalInclTax() + $order->getShippingInclTax();
 			
             return $price;
         }
@@ -104,13 +104,13 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     /**
      * Returns the order shipping fee
      *
-     * @return string|boolean
+     * @return float|boolean
      */
     public function getShippingCost()
     {
         $order = $this->_order;
         if ($order) {
-            $shippingCost = number_format($order->getShippingInclTax(), 2);
+            $shippingCost = $order->getShippingInclTax();
 			
             return $shippingCost;
         }
@@ -120,7 +120,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     /**
      * Returns the order tax amount
      *
-     * @return string|boolean
+     * @return float|boolean
      */
     public function getTaxAmount()
     {
@@ -134,7 +134,6 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
             $revenueInclTax = $order->getSubtotalInclTax() + $order->getShippingInclTax();
             $revenue = $order->getSubtotal() + $order->getShippingAmount();
             $taxAmount = $revenueInclTax - $revenue;
-            $taxAmount = number_format($taxAmount, 2);
             return $taxAmount;
         }
 		

@@ -8,12 +8,19 @@ if ($isActive && $programID != "") :
 
     <!-- SKROUTZ ANALYTICS CODE start -->
     <script>
-        skroutz_analytics('ecommerce', 'addOrder', JSON.stringify({
-            order_id: '<?= $block->getRealOrderId() ?>', // Order ID. Required.
-            revenue: '<?= $block->getPrice() ?>', // Grand Total. Includes Tax and Shipping. Does not include payment costs.
-            shipping: '<?= $block->getShippingCost() ?>', // Total Shipping Cost. Does not include payment costs.
-            tax: '<?= $block->getTaxAmount() ?>' // Total Tax.
-        }));
+        skroutz_analytics('ecommerce', 'addOrder', 
+            <?= sprintf("{
+                order_id: '%d',
+                revenue: '%.2f',
+                shipping: '%.2f',    // Total Shipping Cost. Does not include payment costs.
+                tax: '%.2f'
+            }", 
+                $block->getRealOrderId(),   // Order ID. Required.
+                $block->getPrice(),         // Grand Total. Includes Tax and Shipping. Does not include payment costs.
+                $block->getShippingCost(),  // Total Shipping Cost. Does not include payment costs.
+                $block->getTaxAmount()      // Total Tax.
+            ); ?>
+        );
     </script>
 
     <?php $items = $block->getAllOrderVisibleItems() ?>
@@ -29,13 +36,21 @@ if ($isActive && $programID != "") :
             }
         ?>
 
-            skroutz_analytics('ecommerce', 'addItem', JSON.stringify({
-                order_id: '<?= $block->getRealOrderId() ?>', // Order ID. Required.
-                product_id: '<?= $block->escapeJs($item_sku) ?>', // Product ID. Required.
-                name: '<?= $block->escapeJs($item->getName()) ?>', // Product Name. Required.
-                price: '<?= $item->getPriceInclTax() ?>', // Price per Unit. Required.
-                quantity: '<?= $item->getQtyOrdered() ?>' // Quantity of Items. Required.
-            }));
+            skroutz_analytics('ecommerce', 'addItem',
+                <?= sprintf("{
+                    order_id: '%d',
+                    product_id: '%s',
+                    name: '%s',
+                    price: '%.2f',
+                    quantity: '%d'
+                }",
+                    $block->getRealOrderId(),            // Order ID. Required.
+                    $block->escapeJs($item_sku),        // Product ID. Required.
+                    $block->escapeJs($item->getName()), // Product Name. Required.
+                    $item->getPriceInclTax(),           // Price per Unit. Required.
+                    $item->getQtyOrdered()              // Quantity of Items. Required.
+                ); ?>
+            );
 
         <?php } ?>
     </script>
