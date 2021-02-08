@@ -94,9 +94,23 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     {
         $order = $this->_order;
         if ($order) {
-            $price = $order->getSubtotalInclTax() + $order->getShippingInclTax();
+            $price = $order->getSubtotalInclTax() + $order->getDiscountAmount() + $order->getShippingInclTax();
 			
             return $price;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the order total discounts 
+     *
+     * @return float|boolean
+     */
+    public function getDiscountAmount()
+    {
+        $order = $this->_order;
+        if ($order) {
+            return $order->getDiscountAmount();
         }
         return false;
     }
@@ -133,7 +147,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
 			
             $revenueInclTax = $order->getSubtotalInclTax() + $order->getShippingInclTax();
             $revenue = $order->getSubtotal() + $order->getShippingAmount();
-            $taxAmount = $revenueInclTax - $revenue;
+            $taxAmount = $revenueInclTax - $revenue - $order->getDiscountTaxCompensationAmount();
             return $taxAmount;
         }
 		
@@ -193,4 +207,43 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         return $this->_product->load($productId)->getSku();
     }
 
+    /**
+     * Distribute cart discounts proportionally among items
+     *
+     * @param array $items
+     * @return array
+     */
+    public function distributeCartDiscounts($items) 
+    {
+        $itemDiscounts = [];
+
+        $total = $this->getPrice();
+        $totalDiscount = $this->getDiscountAmount();
+        $discountRemainder = $totalDiscount;
+        // select item to receive discount remainder
+        // find the first item with quantity = 1
+        // if none found use the last item
+        $remainderItemIndex = array_key_last($items); 
+        foreach ($items as $index => $item) {
+            if ($item->getQtyOrdered() == 1) {
+                $remainderItemIndex = $index;
+                break;
+            }
+        }
+
+        // Distribute the discount among all other items 
+        // except the one selected to receive the remainder
+        foreach ($items as $index => $item) {
+            if ($index != $remainderItemIndex) {
+                $itemDiscount = round($item->getPriceInclTax() * $totalDiscount / $total, 2);
+                $itemDiscounts[$index] = $itemDiscount;
+                $discountRemainder -= $itemDiscount * $item->getQtyOrdered();
+            }
+        }
+        // Apply the remainder of the discount to the selected item
+        $itemDiscount = $discountRemainder / $items[$remainderItemIndex]->getQtyOrdered();
+        $itemDiscounts[$remainderItemIndex] = $itemDiscount;
+
+        return $itemDiscounts;
+    }
 }

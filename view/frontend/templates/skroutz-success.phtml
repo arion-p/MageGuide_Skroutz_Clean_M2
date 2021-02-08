@@ -22,20 +22,26 @@ if ($isActive && $programID != "") :
             ); ?>
         );
     </script>
+    <!-- Total discount: <?= $block->getDiscountAmount(); ?> -->
 
-    <?php $items = $block->getAllOrderVisibleItems() ?>
+    <?php 
+        $items = $block->getAllOrderVisibleItems();
+        $itemDiscounts = $block->distributeCartDiscounts($items);
+    ?>
 
     <script>
-        <?php foreach ($items as $item) {
+        <?php 
+        foreach ($items as $index => $item) {
             $child_id = $block->getChildId($item->getSku());
             $parent_id = $block->getParentId($child_id);
+
             if ($parent_id) {
                 $item_sku = $block->getSkuFromId($parent_id);
             } else {
                 $item_sku = $block->getSkuFromId($child_id);
             }
         ?>
-
+            // item discount: <?= $itemDiscounts[$index] ?> 
             skroutz_analytics('ecommerce', 'addItem',
                 <?= sprintf("{
                     order_id: '%d',
@@ -44,11 +50,12 @@ if ($isActive && $programID != "") :
                     price: '%.2f',
                     quantity: '%d'
                 }",
-                    $block->getRealOrderId(),            // Order ID. Required.
-                    $block->escapeJs($item_sku),        // Product ID. Required.
-                    $block->escapeJs($item->getName()), // Product Name. Required.
-                    $item->getPriceInclTax(),           // Price per Unit. Required.
-                    $item->getQtyOrdered()              // Quantity of Items. Required.
+                    $block->getRealOrderId(),               // Order ID. Required.
+                    $block->escapeJs($item_sku),            // Product ID. Required.
+                    $block->escapeJs($item->getName()),     // Product Name. Required.
+                    $item->getPriceInclTax() +
+                            $itemDiscounts[$index],         // Price per Unit. Required.
+                    $item->getQtyOrdered()                  // Quantity of Items. Required.
                 ); ?>
             );
 
