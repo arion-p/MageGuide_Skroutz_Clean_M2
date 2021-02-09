@@ -22,7 +22,6 @@ if ($isActive && $programID != "") :
             ); ?>
         );
     </script>
-    <!-- Total discount: <?= $block->getDiscountAmount(); ?> -->
 
     <?php 
         $items = $block->getAllOrderVisibleItems();
@@ -41,7 +40,7 @@ if ($isActive && $programID != "") :
                 $item_sku = $block->getSkuFromId($child_id);
             }
         ?>
-            // item discount: <?= $itemDiscounts[$index] ?> 
+
             skroutz_analytics('ecommerce', 'addItem',
                 <?= sprintf("{
                     order_id: '%d',
@@ -50,12 +49,12 @@ if ($isActive && $programID != "") :
                     price: '%.2f',
                     quantity: '%d'
                 }",
-                    $block->getRealOrderId(),               // Order ID. Required.
-                    $block->escapeJs($item_sku),            // Product ID. Required.
-                    $block->escapeJs($item->getName()),     // Product Name. Required.
+                    $block->getRealOrderId(),            // Order ID. Required.
+                    $block->escapeJs($item_sku),        // Product ID. Required.
+                    $block->escapeJs($item->getName()), // Product Name. Required.
                     $item->getPriceInclTax() +
                             $itemDiscounts[$index],         // Price per Unit. Required.
-                    $item->getQtyOrdered()                  // Quantity of Items. Required.
+                    $item->getQtyOrdered()              // Quantity of Items. Required.
                 ); ?>
             );
 
