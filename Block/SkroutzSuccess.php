@@ -41,6 +41,11 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     protected $_order;
 
     /**
+     * @var string
+     */
+    protected $_orderInrementId;
+
+    /**
      * constructor class
      *
      * @param \Magento\Checkout\Model\Session                                               $checkoutSession
@@ -62,8 +67,9 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         $this->_catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->_scopeConfig = $context->getScopeConfig();
         
-        if ($this->_checkoutSession->getLastRealOrderId()) {
-            $this->_order = $this->_orderFactory->create()->loadByIncrementId($this->_checkoutSession->getLastRealOrderId());
+        $this->_orderInrementId = $this->_checkoutSession->getLastRealOrderId();
+        if ($this->_orderInrementId) {
+            $this->_order = $this->_orderFactory->create()->loadByIncrementId($this->_orderInrementId);
         }
 
         parent::__construct($context);
@@ -72,15 +78,12 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     /**
      * Returns the id of the last order
      *
-     * @return integer|boolean
+     * @return string|boolean
      */
     public function getRealOrderId()
     {
-        $order = $this->_order;
-        if ($order) {
-            $lastorderId = $order->getId();
-            return $lastorderId;
-
+        if ($this->_orderInrementId) {
+            return $this->_orderInrementId;
         }
         return false;
     }
