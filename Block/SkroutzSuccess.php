@@ -43,7 +43,7 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
     /**
      * @var string
      */
-    protected $_orderInrementId;
+    protected $_orderIncrementId;
 
     /**
      * constructor class
@@ -67,9 +67,9 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
         $this->_catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
         $this->_scopeConfig = $context->getScopeConfig();
         
-        $this->_orderInrementId = $this->_checkoutSession->getLastRealOrderId();
-        if ($this->_orderInrementId) {
-            $this->_order = $this->_orderFactory->create()->loadByIncrementId($this->_orderInrementId);
+        $this->_orderIncrementId = $this->_checkoutSession->getLastRealOrderId();
+        if ($this->_orderIncrementId) {
+            $this->_order = $this->_orderFactory->create()->loadByIncrementId($this->_orderIncrementId);
         }
 
         parent::__construct($context);
@@ -82,8 +82,8 @@ class SkroutzSuccess extends \Magento\Framework\View\Element\Template
      */
     public function getRealOrderId()
     {
-        if ($this->_orderInrementId) {
-            return $this->_orderInrementId;
+        if ($this->_orderIncrementId) {
+            return $this->_orderIncrementId;
         }
         return false;
     }

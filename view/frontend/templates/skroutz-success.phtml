@@ -10,7 +10,7 @@ if ($isActive && $programID != "") :
     <script>
         skroutz_analytics('ecommerce', 'addOrder', 
             <?= sprintf("{
-                order_id: '%d',
+                order_id: '%s',
                 revenue: '%.2f',
                 shipping: '%.2f',    // Total Shipping Cost. Does not include payment costs.
                 tax: '%.2f'
