@@ -11,5 +11,10 @@
                 <value id="skroutz-analytics-iframe" type="host">https://analytics.skroutz.gr</value>
             </values>
         </policy>
+        <policy id="img-src">
+            <values>
+                <value id="skroutz-analytics-img" type="host">https://analytics.skroutz.gr</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>
