@@ -24,6 +24,11 @@
                     <!--<validate>required-entry</validate>-->
                     <comment>Please enter Skroutz Merchant ID.</comment>
                 </field>
+                <field id="use_product_ids" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use product IDs</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Send product IDs instead of SKUs to Skroutz. The product identification used should match the one used in the XML feed</comment>
+                </field>
             </group>
         </section>
     </system>

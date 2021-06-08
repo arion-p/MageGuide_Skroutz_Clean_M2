@@ -34,11 +34,8 @@ if ($isActive && $programID != "") :
             $child_id = $block->getChildId($item->getSku());
             $parent_id = $block->getParentId($child_id);
 
-            if ($parent_id) {
-                $item_sku = $block->getSkuFromId($parent_id);
-            } else {
-                $item_sku = $block->getSkuFromId($child_id);
-            }
+            $item_id = $parent_id ?? $child_id;
+            $item_sku = $_helper->getUseProducIDs()? $item_id : $block->getSkuFromId($item_id);
         ?>
 
             skroutz_analytics('ecommerce', 'addItem',
@@ -49,11 +46,11 @@ if ($isActive && $programID != "") :
                     price: '%.2f',
                     quantity: '%d'
                 }",
-                    $block->getRealOrderId(),            // Order ID. Required.
+                    $block->getRealOrderId(),           // Order ID. Required.
                     $block->escapeJs($item_sku),        // Product ID. Required.
                     $block->escapeJs($item->getName()), // Product Name. Required.
                     $item->getPriceInclTax() +
-                            $itemDiscounts[$index],         // Price per Unit. Required.
+                            $itemDiscounts[$index],     // Price per Unit. Required.
                     $item->getQtyOrdered()              // Quantity of Items. Required.
                 ); ?>
             );

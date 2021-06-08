@@ -37,4 +37,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return trim($this->_skroutzOptions['general']['program_id']);
     }
 
+    /**
+     * @return boolean
+     */
+    public function getUseProducIDs()
+    {
+        return $this->_skroutzOptions['general']['use_product_ids'];
+    }
+
 }
