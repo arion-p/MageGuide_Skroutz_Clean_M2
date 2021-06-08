@@ -34,7 +34,7 @@ if ($isActive && $programID != "") :
             $child_id = $block->getChildId($item->getSku());
             $parent_id = $block->getParentId($child_id);
 
-            $item_id = $parent_id ?? $child_id;
+            $item_id = $parent_id? $parent_id : $child_id;
             $item_sku = $_helper->getUseProducIDs()? $item_id : $block->getSkuFromId($item_id);
         ?>
 
